@@ -17,6 +17,17 @@ object ImplicitClass {
     }
   }
 
+  implicit class IntWithTime(x: Int) {
+    def time[A](f: => A): Unit = {
+      def loop(current: Int): Unit =
+        if(current > 0) {
+          f
+          loop(current - 1)
+        }
+      loop(x)
+    }
+  }
+
   implicit class AverageCalculator(x: HighestMark) {
     def average(y: LowestMark) = AverageMark((x.mark + y.mark)/2)
   }
@@ -34,6 +45,8 @@ trait ImplicitClassApplication {
   println(5 greaterThan 2)
 
   5 times println("Hi")
+
+  6 time print("abc")
 
   val high = HighestMark(55.5)
   val low = LowestMark(5.5)
